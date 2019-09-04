@@ -27,10 +27,6 @@ class Queue {
         if(list.size() > 0) {
         	str = list.get(0);
             list.remove(0);
-        } else {
-            // リストが空のときに何もリストを参照してエラーで落ちないように以下を記述。try-catchの方がスッキリするかも
-            System.out.println("リストに何もありません。処理を終了します");
-            System.exit(0);
         }
 
         // 取り出した値を返す

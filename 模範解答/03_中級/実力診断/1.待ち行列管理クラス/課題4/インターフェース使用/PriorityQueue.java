@@ -20,8 +20,8 @@ class PriorityQueue {
 
         // リストの要素が2つ以上あるときにソートを行うよう以下の条件を記述
         if(list.size() > 1) {
-          // 何を基準にソートを行うかは抽象クラスComparable<T>を継承したValue_Priorityクラスで記述
-          Collections.sort(list);
+			// 何を基準にソートを行うかは抽象クラスComparable<T>を継承したValue_Priorityクラスで記述
+			Collections.sort(list);
         }
     }
 
@@ -32,9 +32,6 @@ class PriorityQueue {
         if(list.size() > 0) {
             pop_str = list.get(0).Getvalue();
             list.remove(0);
-        } else {
-            System.out.println("リストに何もありません。処理を終了します");
-            System.exit(0);
         }
 
         return pop_str;
