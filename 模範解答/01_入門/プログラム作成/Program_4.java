@@ -44,6 +44,7 @@ public class Program_4 {
 			no = random.nextInt(13);
 			System.out.println("ディーラーに「" + card[no] + "」が配られました。");
 			// ディーラーの手札をArrayList yorCard に追加する
+			dealerCard.add(card[no]);
 		}
 		System.out.println();
 
@@ -123,8 +124,8 @@ public class Program_4 {
 
 		// 手札のスコアを記憶する変数scoreを用意する
 		int score = 0;
-		// スコアが21を超えた時のためにAの数を記憶する変数countを用意する
-		int count = 0;
+		// A を所持しているかどうかのフラグ
+		boolean hasCardA = false;
 
 		// 手札の枚数分だけ同じ処理をしたいのでforを使う
 		// 検索キーワード：「Java 拡張for文」
@@ -135,10 +136,10 @@ public class Program_4 {
 			// カードの文字列によって違う処理をするためswitch-case文で条件分岐させる
 			switch (str) {
 			case "A":
-				// Aの場合は、一旦、11として加算する
-				score += 11;
-				// スコアが21を超えた場合に A を 1 として計算できるように枚数を数えておく
-				count++;
+				// Aの場合は、一旦、1として加算する
+				score += 1;
+				// A を所持している場合は、A の所持フラグを true にする
+				hasCardA = true;
 				break;
 			case "J":
 			case "Q":
@@ -153,24 +154,13 @@ public class Program_4 {
 			}
 		}
 
-		// Aが手札にある場合は、Aを1として計算できるのでその場合の処理
-		// スコアが21より大きい場合のみ行う
-		// Aの数は引いたカードの内容によって変わるのでwhileを使う
-		while (score > 21) {
-			// 永久に点数を引き続けないように、Aの枚数分だけ繰り返すようにifで条件分岐させる
-			if (count > 0) {
-				// 11として数えていたAを1として数えたいので、差を引く(11-1=10)
-				score -= 10;
-				// 所持している「A」１枚分を計算し直したので「A」の数を減らす
-				count--;
-			} else {
-				// 所持しているAを全て1として数えても21を超えている場合while文を抜け出す
-				break;
-			}
+		// A を持っていて、スコアが 11 以下の場合は、A を 11 として計算する
+		if (hasCardA == true && score <= 11) {
+			// すでに 1 として数えている A を 11 として数え直すので、差の 10 を加算する
+			score += 10;
 		}
 
 		// スコアを返す
 		return score;
 	}
-
 }
