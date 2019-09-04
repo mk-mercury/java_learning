@@ -5,67 +5,78 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Program_5 {
+
 	public static void main(String[] args) throws Exception {
-		// 乱数を使う準備
+		// ランダムクラスを使う準備をする
 		Random random = new Random();
 
-		// 文字入力を行うので、Scanner の準備
+		// 文字入力を行うので、Scanner の準備をする
 		Scanner stdin = new Scanner(System.in);
 
-		// ----------------------------------
-		// コンピュータの数字を決める
-		// ※４つの数字で、同じ数字を使ってはいけない
+		/* ----------------------------------
+		 * ※４つの数字で、同じ数字を使ってはいけない
+		 * ランダムクラスのみだと毎回0-9の中から決定するので数字が被ってしまうことがある
+		 * 使った数字を削除して、残った数字から再度数字を決定できれば数字が重複しない
+		 * ---------------------------------- */
 
-		// コンピューターが選んだ数字を配列として保持するための変数
+		// 重複しないランダムな数字4桁を決める
+		// コンピューターが選んだ数字を入れるArrayList answer を用意する
 		ArrayList<Integer> answer = new ArrayList<Integer>();
 
-		// 同じ数字を使わないための対策を行う
-		// 0-9までの数字を入れた配列 numbers を作成する
+		// 同じ数字を使わないための対策として配列から数字を取り出すようにする
+		// 0-9までの数字を入れたArrayList numbers を作成する
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
 		for (int i = 0; i < 10; i++) {
 			numbers.add(i);
 		}
+
 		// numbers からランダムに数字を４つ取り出して、answers に入れる
 		for (int i = 0; i < 4; i++) {
-			// numbers から取り出す数字のインデックスをランダムで決める
-			// 乱数は ０〜 numbersの要素数-1 まで
+			// numbers から取り出す数字のインデックスをランダムで決める(0〜 numbersの要素数-1)
 			int index = random.nextInt(numbers.size());
 
-			// numbers からランダムで決めたインデックスの数字を取り出す
+			// numbers からランダムで決めたインデックスの数字を取り出して変数 num に記憶させる
 			int num = numbers.get(index);
 
 			// 取り出した数字を answers に追加する
 			answer.add(num);
 
-			// 取り出した数字を numbers から取り除く
-			numbers.remove(index); // 配列から index 番目の要素を取り除く
+			// このままだと同じ数字を取り出してしまう可能性があるので
+			// numbers から answers に追加した数字を numbers から取り除く
+			numbers.remove(index); // numbers から index 番目の要素を取り除く
 		}
 		System.out.println("numbers = " + numbers);
 		System.out.println("answer = " + answer);
 		System.out.println();
 
-		// 入力回数を数える変数
+		// 入力回数を数える変数を用意する
 		int count = 1;
 
-		// クリアするまでのループ(クリアしたらbreakで抜ける想定)
+		// ヒット数が4になるまでループさせるのでwhile文を使い無限にループをさせる(クリアしたらbreakで抜ける想定)
 		while (true) {
 			// ユーザーが４桁の数字を入力する
-			// 　入力してくださいメッセージを表示
+			// 　「４桁の数字を入力してください。」を表示する
 			System.out.println("４桁の数字を入力してください。");
 
-			// 　ユーザーが入力した数字を取得
+			// 　4桁の数字を入力させる
+			// 　「入力された数字は〇〇です」を表示する
 			int input = stdin.nextInt();
 			System.out.println("入力された数字は" + input + "です");
 
-			// 　入力された数字を配列に１桁ずつ格納する
+			// 　入力された数字を user に１桁ずつ格納する
 			ArrayList<Integer> user = new ArrayList<Integer>();
-			user.add((input / 1000) % 10); // １つ目の数字
-			user.add((input / 100) % 10); // ２つ目の数字
-			user.add((input / 10) % 10); // ３つ目の数字
-			user.add(input % 10); // ４つ目の数字
+			// １つ目の数字(千の位の数字)を user に追加する
+			user.add((input / 1000) % 10);
+			// ２つ目の数字(百の位の数字)を user に追加する
+			user.add((input / 100) % 10);
+			// ３つ目の数字(十の位の数字)を user に追加する
+			user.add((input / 10) % 10);
+			// ４つ目の数字(一の位の数字)を user に追加する
+			user.add(input % 10);
 			System.out.println(user);
 
-			// 入力された数字のヒットの数を数える
+			// 同じインデックスの要素同士を比較してヒットの数を数える
+			// ヒット数を数えるための変数を用意する
 			int hit = 0;
 			for (int i = 0; i < 4; i++) {
 				if (answer.get(i) == user.get(i)) {
@@ -74,37 +85,37 @@ public class Program_5 {
 				}
 			}
 
-			// 入力された数字のブローの数を数える
+			// answer と user の数字を比較してブロー数を数える
+			// ブロー数を数えるための変数を用意する
 			int blow = 0;
+			// userのi番目の数字を answer から探すためのループを作る
 			for (int i = 0; i < 4; i++) {
-				// userのi番目の数字を answer から探すためのループ
 				int user_num = user.get(i); // 入力された数字の i 番目の数字
 
+				// userのi番目の数字が answer の j 番目と比較して同じ数字を探すためのループを作る
 				for (int j = 0; j < 4; j++) {
-					// userのi番目の数字が answer の j 番目と比較するためのループ
 					if (user_num == answer.get(j)) {
-						if (i != j) { // 同じ位置の場合はヒットになるので、除外する
+						if (i != j) { // 同じ位置の場合はヒットになるので、ヒットの時はブロー数を数えない
 							blow++;
 						}
 					}
 				}
 			}
 
-			// クリア判定（ヒット＝４）を行う(breakで抜ける)
+			// 正解した(ヒットが4になった)場合にループから抜け出す(breakで抜ける)
 			if (hit == 4) {
 				break;
 			}
 
-			// 結果（ヒットの数、ブローの数）を表示
+			// 正解していなかった場合に「残念！！ヒット:○○ / ブロー:〇〇」を表示する
 			System.out.println("残念！！ヒット:" + hit + " / ブロー:" + blow);
 
 			// 入力回数を１増やす
 			count++;
 		}
 
-		// クリアメッセージを表示して終了
+		// 「おめでとう！！〇〇回目で当てられちゃった！！」を表示して終了する
 		System.out.println("おめでとう！！" + count + "回目で当てられちゃった！！");
-
 
 		// 終了処理を行う
 		stdin.close();
