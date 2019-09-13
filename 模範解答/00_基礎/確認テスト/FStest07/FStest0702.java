@@ -47,8 +47,8 @@ public class FStest0702 {
     }
 
     static int[][] setNumsToBlocksArray(int[][] blocksArray) {
-        for (int i = 1; i < blocksArray.length; i++) {
-            for (int j = 1; j < blocksArray[i].length; j++) {
+        for (int i = 0; i < blocksArray.length; i++) {
+            for (int j = 0; j < blocksArray[i].length; j++) {
                 if ((i + j) % 6 == 0 || (i - j) % 6 == 0) {
                     blocksArray[i][j] = 1;
                 } else {
@@ -60,8 +60,8 @@ public class FStest0702 {
     }
 
     static void showBlocks(int[][] blocksArray) {
-        for (int i = 1; i < blocksArray.length; i++) {
-            for (int j = 1; j < blocksArray[i].length; j++) {
+        for (int i = 0; i < blocksArray.length; i++) {
+            for (int j = 0; j < blocksArray[i].length; j++) {
                 if (blocksArray[i][j] == 1) {
                     System.out.print("□");
                 } else {
